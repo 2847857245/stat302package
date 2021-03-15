@@ -1,12 +1,13 @@
 #' Fahrenheit converter
 #'
 #' This function converts temperature from Fahrenheit to Celsius.
+#'
 #' @param temp_F Numeric input indicating temperature in Fahrenheit.
 #' @keywords temperature
 #'
-#' @return Numeric representing \cod{temp_F} converted to Celsius
+#' @return Numeric representing \code{temp_F} converted to Celsius
 #'
-#' @example
+#' @examples
 #' f_to_c(32)
 #' f_to_c(212)
 #'

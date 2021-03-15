@@ -10,9 +10,14 @@ f_to_c(temp_F)
 \item{temp_F}{Numeric input indicating temperature in Fahrenheit.}
 }
 \value{
-Numeric representing \cod{temp_F} converted to Celsius
+Numeric representing \code{temp_F} converted to Celsius
 }
 \description{
 This function converts temperature from Fahrenheit to Celsius.
+}
+\examples{
+f_to_c(32)
+f_to_c(212)
+
 }
 \keyword{temperature}
