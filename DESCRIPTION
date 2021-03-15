@@ -1,0 +1,14 @@
+Package: myfirstpackage
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Yu",
+           family = "Fang",
+           role = c("aut", "cre"),
+           email = "fangy35@uw.edu")
+Description: This is the first R package in Stat302
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
