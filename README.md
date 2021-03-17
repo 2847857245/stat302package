@@ -2,24 +2,30 @@
 # myfirstpackage
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/2847857245/stat302package/workflows/R-CMD-check/badge.svg)](https://github.com/2847857245/stat302package/actions)
 <!-- badges: end -->
 
 The goal of myfirstpackage is to ...
 
 ## Installation
 
-You can install the released version of myfirstpackage from [CRAN](https://CRAN.R-project.org) with:
+To download the corncob package, use the code below.
 
 ``` r
-install.packages("myfirstpackage")
+install.packages("devtools")
+devtools::install_github("2847857245/stat302package")
+library(myfirstpackage)
 ```
 
-## Example
+## Use
 
-This is a basic example which shows you how to solve a common problem:
+The vignette demonstrates example usage of all main functions. Please file an issue if you have a request for a tutorial that is not currently included. You can see the vignette by using the following code:
 
 ``` r
 library(myfirstpackage)
-## basic example code
+# Use this to view the vignette in the projectpackage HTML help
+help(package = "myfirstpackage", help_type = "html")
+# Use this to view the vignette as an isolated HTML file
+utils::browseVignettes(package = "myfirstpackage")
 ```
 

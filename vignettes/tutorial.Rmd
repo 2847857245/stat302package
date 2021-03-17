@@ -1,0 +1,141 @@
+---
+title: "Project 3: myfirstpackage Tutorial"
+author: "Yu Fang"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{myfirstpackage Tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(myfirstpackage)
+```
+
+
+```{r}
+#A tutorial for my_t.test
+#hypothesis: mean of the lifeExp data from my_gapminder equals to 60
+#alternative hypothesis: mean of the lifeExp data from my_gapminder does not equal to 60
+my_t.test(x=(my_gapminder$lifeExp),alternative="two.sided",mu = 60)
+#hypothesis: mean of the lifeExp data from my_gapminder equals to 60
+#alternative hypothesis: mean of the lifeExp data from my_gapminder is smaller than 60
+my_t.test(x=(my_gapminder$lifeExp),alternative="less",mu = 60)
+#hypothesis: mean of the lifeExp data from my_gapminder equals to 60
+#alternative hypothesis: mean of the lifeExp data from my_gapminder is larger than 60
+my_t.test(x=(my_gapminder$lifeExp),alternative="greater",mu = 60)
+```
+For the first t-test, we observe P = 0.09322877. Therefore we conclude that we have sufficient evidence to reject the null hypothesis and conclude that the true mean life expectancy is not equal to 60.
+
+For the second t-test, we observe P = 0.9533856 Therefore we conclude that we do not have sufficient evidence to reject the null hypothesis. Therefore, we cannot conclude that the true mean life expectancy is smaller than 60.
+
+For the third t-test, we observe P = 0.04661438. Therefore we conclude that we  have sufficient evidence to reject the null hypothesis and conclude that the true mean life expectancy is greater than 60.
+
+
+
+
+```{r}
+#A tutorial for my_lm
+
+#Demonstrate a regression using lifeExp as your response variable and gdpPercap and continent as explanatory variables
+lm_fit <- my_lm(lifeExp ~gdpPercap + continent, data = my_gapminder)
+lm_fit
+
+#Write the hypothesis test associated with the gdpPercap coefficient.
+my_t.test(x= my_gapminder$gdpPercap, alternative="two.sided", mu = 4.452704e-04)
+
+#predict the fitted values 
+coefficients <- lm_fit$Estimate
+my_matrix <- model.matrix(lifeExp ~gdpPercap + continent, data = my_gapminder)
+y_hat <- my_matrix %*% as.matrix(coefficients)
+my_df <- data.frame("actual" = my_gapminder$lifeExp, "fitted" = y_hat)
+
+#plot the Actual vs. Fitted values.
+library(ggplot2)
+x <- my_gapminder$gdpPercap
+y <- my_df$y_hat
+ggplot(my_df, aes(x=x, y=y)) +
+    xlab(label = "Actual value") +
+    ylab(label = "Fitted value") +
+    geom_point(aes(x = actual, y = fitted)) +
+    geom_abline(slope = 1, intercept = 0) +
+    theme_bw() 
+```
+1. Interpretation of coefficients
+The coefficient of gdpPercap is 4.452704e-04 which means one unit increase of gdp Per capital will lead to 4.452704e-04 increase in life Expectancy.
+
+2. Interpretation of the results the gdpPercap hypothesis test using a p-value cut-off of α=0.05:
+p-value is 6.035278e-161, which is smaller than 0.05. Thus, there's evidence from data supporting that gdpPerCap is not 4.452704e-04.
+
+3.Interpretation of the Actual vs. Fitted values plot:
+The model is not good enough. If it is a perfect model, then all the data points should locate exactly on the slope 1 line. However, we can see a lot of them are far away from that line. This means either there're higher dimension for the explanatory variable or there should more explanatory variables that we haven't covered yet.
+
+```{r}
+#A tutorial for my_knn_cv using my_penguins.
+library(dplyr)
+library(mltools)
+library(class)
+results <- data.frame()
+my_penguins <- na.omit(my_penguins)
+for(i in 1:10) {
+  my_result <- my_knn_cv(train = my_penguins[,3:6], cl = my_penguins$species, k_nn = i, k_cv = 5 )
+  results[1,i] <- my_result$cv_err
+  results[2,i] <- sum(as.numeric(my_penguins$species != my_result$class)) / nrow(my_penguins)
+}
+rownames(results) <- c("cv_err", "training_err")
+colnames(results) <- c("k_nn = 1", "k_nn = 2", "k_nn = 3", "k_nn = 4", "k_nn = 5", "k_nn = 6", "k_nn = 7", "k_nn = 8", "k_nn = 9", "k_nn = 10")
+results
+```
+
+According to the results in the table, the model with k_nn = 1 have both the smallest cv error and the training error. Therefore, k_nn = 1 is the best model when k_cv = 5. 
+
+In the practice, I will also choose the model with k_nn = 1 because it has smallest cv error. Cross-validation is splitting the whole data set into different parts. Each time, we will only use one part to validate the quality of the model and use the rest to train the model. Eventually, the cv-error will accurately shows the quality of different models. In this case, the model with k_nn = 1 is the best one.
+
+
+
+```{r}
+#A tutorial for my_rf_cv using my_penguins.
+library(randomForest)
+#case when k = 2
+k_2_cv <- c()
+k_5_cv <- c()
+k_10_cv <- c()
+for(i in 1:30) {
+  k_2_cv <- append(k_2_cv, my_rf_cv(k = 2))
+  k_5_cv <- append(k_5_cv, my_rf_cv(k = 5))
+  k_10_cv <- append(k_10_cv, my_rf_cv(k = 10))
+}
+k_2_cv
+k_5_cv
+k_10_cv
+```
+
+```{r}
+folds <- rep(c(2, 5, 10), each = 30) %>% as.factor()
+total_cv <- c(k_2_cv, k_5_cv, k_10_cv)
+#Draw three boxplots side by side by using ggplot
+ggplot(data = data.frame(total_cv), aes(x = unlist(folds),
+                   y = total_cv,
+                   fill = folds)) +
+        geom_boxplot()
+```
+```{r}
+final_table <- data.frame()
+final_table[1,1] <- mean(k_2_cv)
+final_table[1,2] <- sd(k_2_cv)
+final_table[2,1] <- mean(k_5_cv)
+final_table[2,2] <- sd(k_5_cv)
+final_table[3,1] <- mean(k_10_cv)
+final_table[3,2] <- sd(k_10_cv)
+colnames(final_table) <- c("Mean", "Standard Deviation")
+rownames(final_table) <- c("k=2", "k=5", "k=10")
+final_table
+```
+We can see from the table and the boxlot, the average and the standard deviation of ev_err become smaller as the value of k gets larger. This is because as the k gets larger, we are going to train our model with more data, so the average cv will be lower

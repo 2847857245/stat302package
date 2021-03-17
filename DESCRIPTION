@@ -8,16 +8,24 @@ Authors@R:
            email = "fangy35@uw.edu")
 Description: This is my first R package in Stat302. It includes four functions: my_t.test, my_lm, my_knn_cv, my_rf_cv. 
 License: GPL-3
-Imports: stats, dplyr, magrittr, randomForest, class, tibble, tidyr, ggplot2
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
     testthat,
-    covr,
     knitr,
     rmarkdown
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
+Imports: 
+    magrittr,
+    dplyr,
+    mltools,
+    class,
+    randomForest,
+    stats,
+    tibble,
+    tidyr,
+    ggplot2
