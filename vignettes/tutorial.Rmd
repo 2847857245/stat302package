@@ -15,6 +15,16 @@ knitr::opts_chunk$set(
 )
 ```
 
+```
+Introduction: This is a R package that includes four functions --- linear regression, T teest, randomforest cross-validation and k nearesr neighbors corss-validation.
+Now, here's the instructions for how to install this package from Github
+
+```{r eval = FALSE}
+install.packages("devtools")
+devtools::install_github("2847857245/stat302package")
+library(myfirstpackage)
+```
+
 ```{r setup}
 library(myfirstpackage)
 ```
@@ -32,11 +42,11 @@ my_t.test(x=(my_gapminder$lifeExp),alternative="less",mu = 60)
 #alternative hypothesis: mean of the lifeExp data from my_gapminder is larger than 60
 my_t.test(x=(my_gapminder$lifeExp),alternative="greater",mu = 60)
 ```
-For the first t-test, we observe P = 0.09322877. Therefore we conclude that we have sufficient evidence to reject the null hypothesis and conclude that the true mean life expectancy is not equal to 60.
+For the first t-test, we observe P = 0.09322877. Therefore there's evidence from data supporting that the true mean life expectancy is not equal to 60.
 
-For the second t-test, we observe P = 0.9533856 Therefore we conclude that we do not have sufficient evidence to reject the null hypothesis. Therefore, we cannot conclude that the true mean life expectancy is smaller than 60.
+For the second t-test, we observe P = 0.9533856 Therefore cannot conclude that the true mean life expectancy is smaller than 60.
 
-For the third t-test, we observe P = 0.04661438. Therefore we conclude that we  have sufficient evidence to reject the null hypothesis and conclude that the true mean life expectancy is greater than 60.
+For the third t-test, we observe P = 0.04661438. Therefore Therefore there's evidence from data supporting that the true mean life expectancy is greater than 60.
 
 
 
